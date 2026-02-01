@@ -4,6 +4,7 @@ import os
 import joblib
 from dataclasses import dataclass
 from typing import Optional
+from pathlib import Path
 
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -17,10 +18,28 @@ class MLArtifacts:
     labels: list[str]
 
 
+DEFAULT_LABELS = ["Complaint", "Billing", "Technical", "Other", "Account"]
 
-DEFAULT_LABELS = ["Complaint", "Billing", "Technical", "Other","Account"]
 
-DATA_PATH = r"C:\Users\hi\OneDrive\Desktop\ai_ticket_api\app\data\enhanced_customer_support_data.csv"
+def resolve_data_path() -> str:
+    """
+    Resolve CSV path in a cross-platform way.
+    Priority:
+      1) ENV: DATA_PATH
+      2) project-relative: /app/app/data/... (Docker) OR <repo>/app/data/... (local)
+    """
+    env_path = os.getenv("DATA_PATH")
+    if env_path:
+        return env_path
+
+    # This file is usually: app/app/services/ml_model.py
+    # parents[1] => app/app
+    base_dir = Path(__file__).resolve().parents[1]
+    candidate = base_dir / "data" / "enhanced_customer_support_data.csv"
+    return str(candidate)
+
+
+DATA_PATH = resolve_data_path()
 
 
 def load_training_data_from_csv(csv_path: str) -> tuple[list[str], list[str]]:
@@ -29,18 +48,16 @@ def load_training_data_from_csv(csv_path: str) -> tuple[list[str], list[str]]:
     df = df.dropna(subset=["Ticket_Subject", "Ticket_Description", "Issue_Category"])
     X = (df["Ticket_Subject"].astype(str) + " " + df["Ticket_Description"].astype(str)).tolist()
 
-   
     mapping = {
         "Technical": "Technical",
         "Billing": "Billing",
         "Fraud": "Complaint",
         "Account": "Account",
-        "General Inquiry": "other",
+        "General Inquiry": "Other",  # fixed casing consistency
     }
 
     y = df["Issue_Category"].astype(str).map(mapping)
-
-    y = y.fillna("other").tolist()
+    y = y.fillna("Other").tolist()
 
     return X, y
 
@@ -71,9 +88,10 @@ def train_and_save(model_path: str, data_path: str = DATA_PATH) -> MLArtifacts:
 
 
 class TicketClassifier:
-    def __init__(self, model_path: str, data_path: str = DATA_PATH):
+    def __init__(self, model_path: str, data_path: str | None = None):
         self.model_path = model_path
-        self.data_path = data_path
+        # if caller provides data_path use it; otherwise use resolved env/relative
+        self.data_path = data_path or DATA_PATH
         self.artifacts: Optional[MLArtifacts] = None
 
     def load(self) -> None:

@@ -16,6 +16,7 @@ COPY . .
 
 # print logs in real time
 ENV PYTHONUNBUFFERED=1
+ENV DATA_PATH=/app/app/data/enhanced_customer_support_data.csv
 
 EXPOSE 8000
 
