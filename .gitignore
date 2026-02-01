@@ -1,0 +1,83 @@
+# ----------------------------
+# Python
+# ----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# ----------------------------
+# Build / Distribution
+# ----------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ----------------------------
+# Logs
+# ----------------------------
+*.log
+
+# ----------------------------
+# OS / Editor
+# ----------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ----------------------------
+# Environment files / secrets
+# ----------------------------
+.env
+.env.*
+!.env.example
+
+# ----------------------------
+# Docker
+# ----------------------------
+*.pid
+docker-data/
+docker-compose.override.yml
+
+# ----------------------------
+# Database (local files)
+# ----------------------------
+*.sqlite3
+*.db
+
+# ----------------------------
+# ML / Model artifacts
+# ----------------------------
+*.pkl
+*.joblib
+
+# ----------------------------
+# Tests / Coverage
+# ----------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# ----------------------------
+# Mypy / type checking
+# ----------------------------
+.mypy_cache/
+.pytype/
+.pyre/
+
+# ----------------------------
+# Jupyter
+# ----------------------------
+.ipynb_checkpoints/
