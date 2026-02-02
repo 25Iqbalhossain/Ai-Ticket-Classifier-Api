@@ -1,16 +1,47 @@
 ## Run (Docker)
 
-1) Copy env:
-   cp .env.example .env
+### 1) Create `.env`
+Copy the example env file and update values if needed:
 
-2) Start:
-   docker compose up --build
+```bash
+cp .env.example .env
 
-Open:
-- Swagger: http://localhost:8000/docs
+Copy-Item .env.example .env
+
+2) Build & Start
+
+From the project root (where docker-compose.yml exists):
+
+docker compose up --build
 
 
-# Project 
+Run in background (optional):
+
+docker compose up --build -d
+
+3) Open API Docs (Swagger)
+
+Swagger UI: http://localhost:8000/docs
+
+Useful Commands:
+
+Stop containers
+docker compose down
+
+Stop + remove volumes (reset DB/data if any)
+docker compose down -v
+
+View logs:
+docker compose logs -f
+
+Rebuild only:
+docker compose build --no-cache
+docker compose up
+
+Check running services
+docker compose ps
+
+
 ai_ticket_api/
 ├─ app/
 │  ├─ main.py
@@ -35,3 +66,4 @@ ai_ticket_api/
 ├─ Dockerfile
 ├─ docker-compose.yml
 └─ README.md
+
