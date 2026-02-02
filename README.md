@@ -1,6 +1,7 @@
 ## Run (Docker)
 
-### 1) Create `.env`
+ 
+ 1) Create `.env`
 Copy the example env file and update values if needed:
 
 ```bash
